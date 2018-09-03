@@ -11,6 +11,9 @@ struct Node {
     Node* next;
     Node* prev;
 
+    Node(): next(nullptr), prev(nullptr){};
+    Node(T argData): next(nullptr), prev(nullptr), data(argData){};
+
     void killSelf();
     void print_next();
 };
