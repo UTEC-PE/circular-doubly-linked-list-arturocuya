@@ -14,7 +14,12 @@ struct Node {
     Node(): next(nullptr), prev(nullptr){};
     Node(T argData): next(nullptr), prev(nullptr), data(argData){};
 
-    void killSelf();
+    void killSelf(Node<T> *start) {
+    	if (next && next != start) {
+    		next->killSelf(start);
+    	}
+    	delete this;
+    };
     void print_next();
 };
 

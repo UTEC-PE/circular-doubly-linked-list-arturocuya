@@ -4,6 +4,7 @@
 #include <iostream>
 #include "node.h"
 #include "iterator.h"
+#include <cmath>
 
 using namespace std;
 
@@ -16,11 +17,13 @@ public:
     List() : start(nullptr) {};
 
     T front() {
-        return start->data;
+        if (start) return start->data;
+        else throw runtime_error("Empty list");
     };
 
     T back() {
-        return start->prev->data;
+        if (start) return start->prev->data;
+        else throw runtime_error("Empty list");
     };
 
     void push_front(T value) {
@@ -30,42 +33,123 @@ public:
             newNode->next = start;
             newNode->prev = start;
         } else {
-            Node<T> *Tmp = start->prev;
-            Tmp->prev = newNode;
-            newNode->next = Tmp;
-            newNode->prev = start;
-            start->prev = newNode;
-            start->next = Tmp->prev;
+    		Node<T> *after = start;
+    		Node<T> *before = start->prev;
+
+    		newNode->next = after;
+    		newNode->prev = before;
+
+    		after->prev = newNode;
+    		before->next = newNode;		
+        }
+        start = newNode;
+        nodes++;
+    };
+
+    void push_back(T value) {
+        Node<T> *newNode = new Node<T>(value);
+        if(!start) {
             start = newNode;
+            newNode->next = start;
+            newNode->prev = start;
+        } else {
+    		Node<T> *after = start;
+    		Node<T> *before = start->prev;
+
+    		newNode->next = after;
+    		newNode->prev = before;
+
+    		after->prev = newNode;
+    		before->next = newNode;		
         }
         nodes++;
     };
 
-    void push_back(T value);
+    void pop_front() {
+        if(start) {
+            Node<T> *target = start;
+            Node<T> *after = start->next;
+            Node<T> *before = start->prev;
 
-    void pop_front();
+            delete target;
+            
+            start = after;
+            after->prev = before;
+            before->next = after;
+            nodes--;
+        } else {
+            throw runtime_error("Empty list");
+        }
+    };
 
-    void pop_back();
+    void pop_back() {
+        if (start) {
+            Node<T> *target = start->prev;
+            Node<T> *before = target->prev;
 
-    T get(int position);
+            delete target;
 
-    void concat(List<T> &other);
+            before->next = start;
+            start->prev = before;
+            nodes--;
+        } else {
+            throw runtime_error("Empty list");
+        }
+    };
 
-    bool empty();
+    T get(int position) {
+        if (start) {
+            Node<T> *r = start;
+            for (int i = 0; i < abs(position); i++) {
+                r = (position > 0) ? r->next : r->prev; 
+            }
+            return r->data;
+        } else {
+            throw runtime_error("Empty list");
+        }
+    };
+
+    void concat(List<T> &other) {
+        
+    };
+
+    bool empty(){
+        return !start;
+    };
 
     int size() {
         return nodes;
     };
 
-    void clear();
-
-    Iterator<T> begin() {
-        return start;
+    void clear() {
+        if (start) {
+            start->killSelf(start);
+        }
+        start = nullptr;
+        nodes = 0;
     };
 
-    Iterator<T> end();
+    Iterator<T> begin() {
+        if (start) {
+            Iterator<T> it = Iterator<T>(start);
+            return it;
+        } else {
+            throw runtime_error("Empty list");
+        }
+    };
 
-    ~List();
+    Iterator<T> end() {
+        if (start) {
+            Iterator<T> it = Iterator<T>(start->prev);
+            return it;  
+        } else {
+            throw runtime_error("Empty list");
+        }
+    };
+
+    ~List(){
+        clear();
+    };
 };
 
 #endif
