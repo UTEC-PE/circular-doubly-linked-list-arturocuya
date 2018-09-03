@@ -27,6 +27,29 @@ int main(int argc, char *argv[]) {
 
     List<int> test;
 
+    List<int> aList;
+    List<int> anotherList;
+
+    aList.push_back(1);
+    aList.push_back(2);
+    aList.push_back(3);
+    aList.push_back(4);
+
+    anotherList.push_back(5);
+    anotherList.push_back(6);
+    anotherList.push_back(7);
+    anotherList.push_back(8);
+
+    aList.concat(anotherList);
+
+    Iterator<int> myIterator = aList.begin();
+
+    for (int i = 0; i < aList.size(); i++) {
+        cout << *myIterator << endl;
+        ++myIterator;    
+    }
+    cout << endl << endl;
+
     const int numberOfElements = generateRandomInt(MIN, MAX);
     for (int i = 0; i < numberOfElements; i++) {
         insertIntoList(test);

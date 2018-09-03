@@ -110,7 +110,18 @@ public:
     };
 
     void concat(List<T> &other) {
+        Node<T> *thisStart = start;
+        Node<T> *thisLast = start->prev;
+        Node<T> *otherStart = other.start;
+        Node<T> *otherLast = other.start->prev;
         
+        thisLast->next = otherStart;
+        otherStart->prev = thisLast;
+
+        otherLast->next = thisStart;
+        thisStart->prev = otherLast;
+
+        nodes += other.size();
     };
 
     bool empty(){
