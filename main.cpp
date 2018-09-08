@@ -20,35 +20,19 @@ int generateRandomInt(int min, int max);
 void insertIntoList(List<int> &numbers);
 void removeFromList(List<int> &numbers);
 
+mt19937 rng; 
+
+/**
+ * Falto hacer merge con develop
+*/
+
 int main(int argc, char *argv[]) {
+    rng.seed(random_device()());
     cout << "===========================================================" << endl;
     cout << "\tDouble Linked Circular List Practice" << endl;
     cout << "===========================================================" << endl << endl;
 
     List<int> test;
-
-    List<int> aList;
-    List<int> anotherList;
-
-    aList.push_back(1);
-    aList.push_back(2);
-    aList.push_back(3);
-    aList.push_back(4);
-
-    anotherList.push_back(5);
-    anotherList.push_back(6);
-    anotherList.push_back(7);
-    anotherList.push_back(8);
-
-    aList.concat(anotherList);
-
-    Iterator<int> myIterator = aList.begin();
-
-    for (int i = 0; i < aList.size(); i++) {
-        cout << *myIterator << endl;
-        ++myIterator;    
-    }
-    cout << endl << endl;
 
     const int numberOfElements = generateRandomInt(MIN, MAX);
     for (int i = 0; i < numberOfElements; i++) {
@@ -68,7 +52,7 @@ int main(int argc, char *argv[]) {
     test.clear();
     assert(test.empty() && "Something is wrong with the clear or empty methods");
     assert(test.size() == 0 && "Something is wrong with the clear method");
-
+    
     for (int i = 0; i < numberOfElements; i++) {
         insertIntoList(test);
     }
@@ -80,7 +64,6 @@ int main(int argc, char *argv[]) {
     for (int i = 0; i < position; i++) {
         ++ite;
     }
-
     assert(test.get(position) == *ite && "Something is wrong with the get method or the iterator");
 
     ite = test.begin();
@@ -92,7 +75,7 @@ int main(int argc, char *argv[]) {
     --ite;
     assert(test.get(numberOfElements - 2) == *ite && "Something is wrong with the iterator (-- operator)");
 
-   for (ite = test.begin(); ite != test.end(); ++ite) {
+    for (ite = test.begin(); ite != test.end(); ++ite) {
         cout << *ite << " ";
     }
     cout << endl;
@@ -102,15 +85,12 @@ int main(int argc, char *argv[]) {
 }
 
 int generateRandomInt(int min, int max) {
-    mt19937 rng;
-    rng.seed(random_device()());
     uniform_int_distribution<mt19937::result_type> distribution(min, max);
     return distribution(rng);
 }
 
 void insertIntoList(List<int> &numbers) {
     const int numberToInsert = generateRandomInt(0, 100);
-
     const int action = generateRandomInt(0, 1);
     switch (action) {
         case PUSH_FRONT: numbers.push_front(numberToInsert); break;

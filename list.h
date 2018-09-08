@@ -101,7 +101,7 @@ public:
         if (start) {
             Node<T> *r = start;
             for (int i = 0; i < abs(position); i++) {
-                r = (position > 0) ? r->next : r->prev; 
+                r = (position > 0) ? r->next : r->prev;  // esto está mal, siempre debería ir hacia adelante
             }
             return r->data;
         } else {

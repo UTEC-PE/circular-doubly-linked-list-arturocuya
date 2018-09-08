@@ -15,7 +15,7 @@ struct Node {
     Node(T argData): next(nullptr), prev(nullptr), data(argData){};
 
     void killSelf(Node<T> *start) {
-    	if (next && next != start) {
+    	if (next && next != start) { // Habría que revisar esto
     		next->killSelf(start);
     	}
     	delete this;
